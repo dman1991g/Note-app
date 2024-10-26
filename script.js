@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load existing notes from localStorage
     loadNotes();
 
+    // Add event listener to the button
     addNoteButton.addEventListener('click', () => {
         const noteText = noteInput.value.trim();
         if (noteText) {
@@ -14,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Function to add a new note
     function addNote(note) {
         const li = document.createElement('li');
         li.textContent = note;
@@ -28,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         saveNotes();
     }
 
+    // Function to save notes to localStorage
     function saveNotes() {
         const notes = [];
         document.querySelectorAll('#notes-list li').forEach(li => {
@@ -36,8 +39,22 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('notes', JSON.stringify(notes));
     }
 
+    // Function to load notes from localStorage
     function loadNotes() {
         const notes = JSON.parse(localStorage.getItem('notes')) || [];
         notes.forEach(note => addNote(note));
+    }
+
+    // Register the service worker
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('service-worker.js')
+                .then((registration) => {
+                    console.log('Service Worker registered with scope:', registration.scope);
+                })
+                .catch((error) => {
+                    console.error('Service Worker registration failed:', error);
+                });
+        });
     }
 });
