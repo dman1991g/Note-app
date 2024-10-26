@@ -34,12 +34,25 @@ function addNoteToDOM(note) {
     const li = document.createElement('li');
     li.textContent = note.title; // Display only the note title
 
+    // Create a delete button
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = 'Delete';
+    deleteButton.onclick = () => deleteNote(note.id); // Set up delete function
+
     // Add an event listener to view the content when the title is clicked
     li.onclick = () => {
-        alert(`Title: ${note.title}\nContent: ${note.content}`); // Display content in an alert (could be improved)
+        alert(`Title: ${note.title}\nContent: ${note.content}`); // Display content in an alert
     };
 
+    li.appendChild(deleteButton); // Add the delete button to the list item
     document.getElementById('notes-list').appendChild(li); // Append the note to the list
+}
+
+function deleteNote(noteId) {
+    // Filter out the note to delete
+    notes = notes.filter(note => note.id !== noteId);
+    saveNotes(); // Update local storage
+    loadNotes(); // Refresh the displayed notes
 }
 
 // Load notes when the app starts
