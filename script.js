@@ -37,7 +37,10 @@ function addNoteToDOM(note) {
     // Create a delete button
     const deleteButton = document.createElement('button');
     deleteButton.textContent = 'Delete';
-    deleteButton.onclick = () => deleteNote(note.id); // Set up delete function
+    deleteButton.onclick = (event) => {
+        event.stopPropagation(); // Prevent click event from propagating to the li element
+        deleteNote(note.id); // Delete the note
+    };
 
     // Add an event listener to view the content when the title is clicked
     li.onclick = () => {
@@ -52,6 +55,7 @@ function deleteNote(noteId) {
     // Filter out the note to delete
     notes = notes.filter(note => note.id !== noteId);
     saveNotes(); // Update local storage
+    document.getElementById('notes-list').innerHTML = ''; // Clear the list in the DOM
     loadNotes(); // Refresh the displayed notes
 }
 
